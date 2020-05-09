@@ -17,7 +17,7 @@ class PiezasTest : public ::testing::Test
 
 TEST(PiezasTest, sanityCheck)
 {
-	srand(9001);
+	srand(1223);
 	ASSERT_TRUE(true);
 }
 
