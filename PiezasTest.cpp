@@ -23,21 +23,24 @@ TEST(PiezasTest, sanityCheck)
 
 TEST(PiezasTest, constructor_initialization_first_space)
 {
-	ASSERT_EQ(Piezas.pieceAt(0, 0), Blank);
+	Piezas game = Piezas();
+	ASSERT_EQ(game.pieceAt(0, 0), Blank);
 }
 
 TEST(PiezasTest, constructor_initialization_first_row)
 {
+	Piezas game = Piezas();
 	for(int i=0; i<BOARD_ROWS; i++) {
-		ASSERT_EQ(Piezas.pieceAt(i, 0), Blank);
+		ASSERT_EQ(game.pieceAt(i, 0), Blank);
 	}
 }
 
 TEST(PiezasTest, constructor_initialization_all_rows)
 {
+	Piezas game = Piezas();
 	for(int i=0; i<BOARD_ROWS; i++) {
 		for(int j=0; j<BOARD_COLS; j++) {
-			ASSERT_EQ(Piezas.pieceAt(i, j), Blank);
+			ASSERT_EQ(game.pieceAt(i, j), Blank);
 		}
 	}
 }
@@ -51,7 +54,8 @@ TEST(PiezasTest, turn)
 
 TEST(PiezasTest, drop_piece1)
 {
-	ASSERT_EQ(Piezas.dropPiece(0), X);
+	Piezas game = Piezas();
+	ASSERT_EQ(game.dropPiece(0), X);
 }
 
 TEST(PiezasTest, drop_piece2)
@@ -90,13 +94,14 @@ TEST(PiezasTest, reset)
 
 TEST(PiezasTest, game_state_empty)
 {
-	ASSERT_EQ(Piezas.gameState(), Blank);
+	Piezas game = Piezas();
+	ASSERT_EQ(game.gameState(), Invalid);
 }
 
 TEST(PiezasTest, game_state1)
 {
 	Piezas game = Piezas();
-	game.dropPiece(i);
+	game.dropPiece(0);
 	game.reset();
 	ASSERT_EQ(game.pieceAt(0, 0), Blank);
 }
@@ -111,11 +116,6 @@ TEST(PiezasTest, game_state2)
 	for(int i=0; i<BOARD_ROWS; i++) {
 		ASSERT_EQ(game.pieceAt(0, i), Blank);
 	}
-}
-
-TEST(PiezasTest, game_state_empty)
-{
-	ASSERT_EQ(Piezas.gameState(), Invalid);
 }
 
 TEST(PiezasTest, game_state_one_piece)
