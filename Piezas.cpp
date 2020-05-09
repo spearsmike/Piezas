@@ -1,5 +1,6 @@
 #include "Piezas.h"
 #include <vector>
+#include <utility>
 /** CLASS Piezas
  * Class for representing a Piezas vertical board, which is roughly based
  * on the game "Connect Four" where pieces are placed in a column and 
@@ -22,6 +23,9 @@
 **/
 Piezas::Piezas()
 {
+    board = std::vector<std::vector<Piece>>
+        (BOARD_ROWS, std::vector<Piece>(BOARD_COLS, Blank));
+    turn = X;
 }
 
 /**
@@ -30,6 +34,8 @@ Piezas::Piezas()
 **/
 void Piezas::reset()
 {
+    board = std::vector<std::vector<Piece>>
+        (BOARD_ROWS, std::vector<Piece>(BOARD_COLS, Blank));
 }
 
 /**
@@ -42,7 +48,25 @@ void Piezas::reset()
 **/ 
 Piece Piezas::dropPiece(int column)
 {
-    return Blank;
+    if(column >= BOARD_COLS)
+        return Invalid;
+    int row;
+    for(row=0; row<BOARD_ROWS && board.at(row).at(column) != Blank; row++);
+    if(row > BOARD_ROWS-1)
+        return Blank;
+
+    board.at(row).at(column) = turn;
+    if(turn == X)
+    {
+        turn = O;
+    }
+    else if(turn == O)
+    {
+        turn = X;
+    } else {
+        throw turn;
+    }
+    return board.at(row).at(column);
 }
 
 /**
@@ -51,7 +75,9 @@ Piece Piezas::dropPiece(int column)
 **/
 Piece Piezas::pieceAt(int row, int column)
 {
-    return Blank;
+    if(row > board.size() || column > board.at(0).size())
+        return Invalid;
+    return board.at(row).at(column);
 }
 
 /**
@@ -65,5 +91,70 @@ Piece Piezas::pieceAt(int row, int column)
 **/
 Piece Piezas::gameState()
 {
-    return Blank;
+    auto update_max = [](const Piece& prevPiece, const unsigned int& localMax, 
+        unsigned int& globalMaxX, unsigned int& globalMaxO)
+    {
+        switch(prevPiece)
+        {
+            case X:
+                if(localMax > globalMaxX)
+                    globalMaxX = localMax;
+                break;
+            case O:
+                if(localMax > globalMaxO)
+                    globalMaxO = localMax;
+                break;
+            default:
+                throw prevPiece;
+        }
+    };
+    
+    unsigned int globalMaxX, globalMaxO, localMax;
+    globalMaxX = globalMaxO = localMax = 0;
+    Piece prevPiece;
+    for(int i=0; i<BOARD_ROWS; i++)
+    { // adjacents in the horizontal
+        localMax = 0;
+        prevPiece = board.at(i).at(0);
+        for(int j=0; j<BOARD_COLS; j++)
+        {
+            if(board.at(i).at(j) == Blank)
+                return Invalid;
+            if(prevPiece == board.at(i).at(j))
+            {
+                localMax++;
+            }
+            else
+            { // streak ended, compare to globalMax
+                update_max(prevPiece, localMax, globalMaxX, globalMaxO);
+                localMax = 1;
+            }
+            prevPiece = board.at(i).at(j);
+        }
+        // the ends of the board adjacency rules
+        update_max(prevPiece, localMax, globalMaxX, globalMaxO);
+    }
+    
+    for(int j=0; j<BOARD_COLS; j++)
+    { // adjacents in the vertical
+        localMax = 0;
+        prevPiece = board.at(0).at(j);
+        for(int i=0; i<BOARD_ROWS; i++)
+        {
+            if(prevPiece == board.at(i).at(j))
+            {
+                localMax++;
+            }
+            else
+            { // streak ended, compare to globalMax
+                update_max(prevPiece, localMax, globalMaxX, globalMaxO);
+                localMax = 1;
+            }
+            prevPiece = board.at(i).at(j);
+        }
+        // the ends of the board break adjacency rules
+        update_max(prevPiece, localMax, globalMaxX, globalMaxO);
+    }
+
+    return (globalMaxX == globalMaxO) ? Blank : (globalMaxX > globalMaxO ? X : O);
 }
