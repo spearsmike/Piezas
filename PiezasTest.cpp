@@ -133,8 +133,8 @@ TEST(PiezasTest, tie1)
 	 * X O X O
 	 */
 	Piezas game = Piezas();
-	for(int i=0; i<BOARD_ROWS*BOARD_COLS; i=(i+1)%BOARD_COLS) {
-		game.dropPiece(i);
+	for(int i=0; i<BOARD_ROWS*BOARD_COLS; i++) {
+		game.dropPiece(i%BOARD_COLS);
 	}
 	ASSERT_EQ(game.gameState(), Blank);
 }
