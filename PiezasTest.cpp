@@ -45,6 +45,26 @@ TEST(PiezasTest, constructor_initialization_all_rows)
 	}
 }
 
+TEST(PiezasTest, piece_at_out_of_bounds1)
+{
+	Piezas game = Piezas();
+	ASSERT_EQ(game.pieceAt(BOARD_ROWS, 0), Invalid);
+}
+
+
+TEST(PiezasTest, piece_at_out_of_bounds2)
+{
+	Piezas game = Piezas();
+	ASSERT_EQ(game.pieceAt(0, BOARD_COLS), Invalid);
+}
+
+
+TEST(PiezasTest, piece_at_out_of_bounds3)
+{
+	Piezas game = Piezas();
+	ASSERT_EQ(game.pieceAt(BOARD_ROWS, BOARD_COLS), Invalid);
+}
+
 TEST(PiezasTest, turn)
 {
 	Piezas game = Piezas();
@@ -64,6 +84,12 @@ TEST(PiezasTest, drop_piece2)
 	game.dropPiece(0);
 	ASSERT_NE(game.pieceAt(0, 0), O);
 	ASSERT_EQ(game.pieceAt(0, 0), X);
+}
+
+TEST(PiezasTest, drop_piece_out_of_range)
+{
+	Piezas game = Piezas();
+	ASSERT_EQ(game.dropPiece(4), Invalid);
 }
 
 TEST(PiezasTest, drop_pieces)
