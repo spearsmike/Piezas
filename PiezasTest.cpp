@@ -139,12 +139,12 @@ TEST(PiezasTest, tie1)
 	ASSERT_EQ(game.gameState(), Blank);
 }
 
-TEST(PiezasTest, Xwin1)
+TEST(PiezasTest, tie2)
 {
 	/** Game board
-	 * X X X X
-	 * O O O O
-	 * X X X X
+	 * X O X O
+	 * O X O X
+	 * X O X O
 	 */
 	Piezas game = Piezas();
 	for(int i=0; i<BOARD_COLS; i++) {
@@ -152,7 +152,7 @@ TEST(PiezasTest, Xwin1)
 			game.dropPiece(i);
 		}
 	}
-	ASSERT_EQ(game.gameState(), X);
+	ASSERT_EQ(game.gameState(), Blank);
 }
 
 TEST(PiezasTest, Owin1)
@@ -212,30 +212,30 @@ TEST(PiezasTest, Owin4)
 	ASSERT_EQ(game.gameState(), O);
 }
 
-TEST(PiezasTest, tie2)
+TEST(PiezasTest, tie3)
 {
 
 	/** Game board
-	 * X X O O                                                                                                 
-	 * O X X X                                                                                                 
-	 * O O O X 
+	 * X X O O
+	 * O X X X
+	 * O O O X
 	 */
 	Piezas game = Piezas();
 	while(game.gameState() == Invalid)
         game.dropPiece(rand()%BOARD_COLS);
-	ASSERT_EQ(game.gameState(), O);
+	ASSERT_EQ(game.gameState(), Blank);
 }
 
 TEST(PiezasTest, Xwin2)
 {
 
 	/** Game board
-	 * X X X X                                                                                                 
-	 * O O O X                                                                                                 
+	 * X X X X
+	 * O O O X
 	 * O O X O
 	 */
 	Piezas game = Piezas();
 	while(game.gameState() == Invalid)
         game.dropPiece(rand()%BOARD_COLS);
-	ASSERT_EQ(game.gameState(), O);
+	ASSERT_EQ(game.gameState(), X);
 }
