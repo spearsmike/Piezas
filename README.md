@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/spearsmike/Piezas/badge.svg?branch=master)](https://coveralls.io/github/spearsmike/Piezas?branch=master)[![Build Status](https://travis-ci.com/spearsmike/Piezas.svg?branch=master)](https://travis-ci.com/spearsmike/Piezas)
+
 # Piezas
 
 ## Associated Enumerated Types
